@@ -88,7 +88,7 @@ class UserController {
         password:req.body.password
       }, {
         where: {
-          id: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+          id: [1,2,3,4,5,6,7,8,9,10,11]
         }
       })
       return res.status(200).json({
