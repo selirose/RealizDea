@@ -64,7 +64,7 @@ router.get('/profile', [function(req, res, next) {
 
 router.patch('/profile/password', UserController.password)
 
-router.patch('/profile/update/:id', [upload.single, userValidator.update, function(req,res,next) {
+router.patch('/profile/update/:id_user', [upload.single, userValidator.update, function(req,res,next) {
   passport.authenticate('user', {
     session: false
   }, async function(err, user, info) {

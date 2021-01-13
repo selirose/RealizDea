@@ -34,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     picture: {
       type: DataTypes.STRING,
+      defaultValue: 'user_0_picture.jpeg',
       get() {
         const picture = this.getDataValue('picture');
         return "/img/" + picture

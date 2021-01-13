@@ -4,11 +4,6 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors') //Enable cors request
 
-const fs = require("fs");
-const https = require("https");
-const key = fs.readFileSync("./ssl/key.pem", "utf-8");
-const cert = fs.readFileSync("./ssl/cert.pem", "utf-8");
-
 app.use(cors())
 
 // Import Routes
@@ -28,5 +23,3 @@ app.use('/contest', contestRoutes);
 
 // Listen to port 3000
 app.listen(3000,()=> console.log("server running on http://localhost:3000"));
-
-https.createServer({key: key, cert: cert }, app).listen(3001);

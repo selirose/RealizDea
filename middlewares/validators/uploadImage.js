@@ -6,30 +6,33 @@ const uploadDir = '/img/';
 const storageUser = multer.diskStorage({
   destination: "./public" + uploadDir,
   filename: function(req, file, cb) {
-    cb(null,"user_"+ req.params.id + "_picture" + path.extname(file.originalname))
+    cb(null,"user_"+ req.params.id_user + "_picture" + path.extname(file.originalname))
   }
 })
 
-
-
 const uploadSingle = multer({
   storage: storageUser,
-  // limits:{filesize:10000000},
-  // fileFilter:function(req,file,cb){
-  //   const filetypes = /pdf|jpeg|jpg|png|gif/;
-  //   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  //   const mimetype = filetypes.test(file.mimetype);
-  //   if(mimetype && extname && (file.filesize<1000000)){
-  //     return cb(null,true)
-  //   } else {
-  //     cb(new multer.MulterError('Error, Please Upload Image File Only!'))
-  //   }
-  // },
   dest: uploadDir,
 })
+
+const storageSubmission = multer.diskStorage({
+  destination: "./public" + uploadDir,
+  filename: function(req, file, cb) {
+    cb(null,"contest_"+ req.params.id_contest + "_participant_" + req.params.id_participant + "_submission_" + file.originalname)
+  }
+})
+
+const uploadMultiple = multer({
+  storage: storageSubmission,
+  dest: uploadDir
+});
 
 module.exports = {
   single: [
     uploadSingle.single('picture')
+  ],
+
+  multiple: [
+    uploadMultiple.array('image', 5)
   ]
 }

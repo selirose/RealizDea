@@ -142,7 +142,7 @@ module.exports = {
       return user.findOne({
         where:{
           fullname: fullname,
-          id: {[Op.ne]: req.params.id}
+          id: {[Op.ne]: req.params.id_user}
         }
       }).then(result=>{
         if (result) {
@@ -157,7 +157,7 @@ module.exports = {
         const checkAccNum = await user.findOne({
           where:{
             account_number: req.body.account_number,
-            id: {[Op.ne]: req.params.id}
+            id: {[Op.ne]: req.params.id_user}
           }
         })
         if (req.body.account_number) {
@@ -179,7 +179,7 @@ module.exports = {
           const filetypes = /pdf|jpeg|jpg|png|gif/;
           const extname = filetypes.test(path.extname(req.file.originalname).toLowerCase());
           const mimetype = filetypes.test(req.file.mimetype);
-          if (req.file.size > 1000000) {
+          if (req.file.size > 10000000) {
             return res.status(422).json({
               errors:{"picture":{"msg":"Please Upload Image file size < 10 MB"}}
             })

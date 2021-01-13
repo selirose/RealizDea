@@ -16,6 +16,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
+      id_participant: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
       submission: {
         allowNull: true,
         type: Sequelize.STRING

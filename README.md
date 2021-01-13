@@ -3,6 +3,8 @@
 
 ## Working Steps:
 1. Setup packages/modules: npm install --save express express-validator sequelize mysql2 body-parser bcrypt multer jsonwebtoken passport passport-local passport-jwt cors moment axios
+1.1. npm install -g nodemon
+1.2. npm install -g sequelize-cli
 
 2. npm init and edit the "test scripts" : ("test" : "nodemon -r ./index.js").
 

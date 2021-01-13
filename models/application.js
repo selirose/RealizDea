@@ -16,7 +16,14 @@ module.exports = (sequelize, DataTypes) => {
   application.init({
     id_contest: DataTypes.INTEGER,
     id_provider: DataTypes.INTEGER,
-    submission: DataTypes.STRING,
+    id_participant: DataTypes.INTEGER,
+    submission: {
+      type:DataTypes.STRING,
+      get() {
+        const submission = this.getDataValue('submission');
+        return "/img/" + submission
+      }
+    },
     description: DataTypes.TEXT,
     id_status_contest: DataTypes.INTEGER
   }, {
