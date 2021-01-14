@@ -454,7 +454,7 @@ class ContestController {
     }
   }
 
-  async contestSubmission(user1, req, res) {
+  async submission(user1, req, res) {
 
     const result = await application.findAll({
       where: {
@@ -511,7 +511,7 @@ class ContestController {
     })
   }
 
-  async updateClose(user1, req, res) {
+  async close(user1, req, res) {
 
     let update = {
       id_status_contest: 2
@@ -594,6 +594,33 @@ class ContestController {
 
   }
 
+  async winner(user1, req, res) {
+
+    const result = await application.findOne({
+      where:{
+        id_status_contest : 4,
+        id_contest : req.params.id_contest
+      },
+      attributes: [
+        'description',
+        'submission'
+      ],
+      include: [{
+        model: status,
+        attributes: ['status']
+      }, {
+        model: user,
+        attributes:
+          [['fullname', 'participant']]
+        }]
+      })
+
+    return res.status(200).json({
+      message: "Winner Aplicant",
+      result: result
+    })
+
+  }
 
 }
 

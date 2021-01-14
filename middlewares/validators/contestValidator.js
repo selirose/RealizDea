@@ -39,7 +39,7 @@ module.exports = {
     }
   ],
 
-  contestClose: [
+  close: [
     check('id_contest').custom((value, {
       req
     }) => {
@@ -105,13 +105,16 @@ module.exports = {
     }),
     check('prize',"Numeric Only!").isNumeric(),
     check('due_date', "Date Format (YYYY-MM-DD) Only").isDate().toDate(),
-    check('announcement', "Date Format (YYYY-MM-DD) Only").isDate().toDate().custom((value,{req}) => {
-      if (req.body.announcement < req.body.due_date ) {
-        throw new Error('Announcement must be later than due_date')
-      }
-    }),
+    check('announcement').isDate().toDate(),
     check('description',"Please Fill in the Description").not().isEmpty(),
     (req, res, next) => {
+      if (req.body.announcement < req.body.due_date) {
+        return res.status(422).json({
+          errors: {
+            "announcement":"Announcement Date must be later than Due Date"
+          }
+        })
+      }
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -202,7 +205,7 @@ module.exports = {
     }
   ],
 
-  contestSubmission: [
+  submission: [
     check('id_contest').custom((value, {
       req
     }) => {
@@ -227,7 +230,7 @@ module.exports = {
     }
   ],
 
-  submissionWinner: [
+  winner: [
     check('id_submission').custom((value, {
       req
     }) => {

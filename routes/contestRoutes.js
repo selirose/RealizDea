@@ -42,6 +42,24 @@ router.post('/search/status',[function(req, res, next) {
   })(req, res, next);
 }]);
 
+router.get('/mycontest',[function(req, res, next) {
+  passport.authenticate('user', {
+    session: false
+  }, async function(err, user, info) {
+    // if (err) {
+    //   return next(err);
+    // }
+    if (!user) {
+      res.status(401).json({
+        status: 'Error',
+        message: info.message
+      });
+      return;
+    }
+    ContestController.myContest(user, req, res);
+  })(req, res, next);
+}]);
+
 router.get('/:id',[contestValidator.contest,function(req, res, next) {
   passport.authenticate('all', {
     session: false
@@ -60,25 +78,7 @@ router.get('/:id',[contestValidator.contest,function(req, res, next) {
   })(req, res, next);
 }]);
 
-router.get('/my/contest',[function(req, res, next) {
-  passport.authenticate('user', {
-    session: false
-  }, async function(err, user, info) {
-    // if (err) {
-    //   return next(err);
-    // }
-    if (!user) {
-      res.status(401).json({
-        status: 'Error',
-        message: info.message
-      });
-      return;
-    }
-    ContestController.myContest(user, req, res);
-  })(req, res, next);
-}]);
-
-router.post('/:id_contest/submit/:id_participant', [upload.multiple, contestValidator.submit, function(req, res, next){
+router.post('/submit/:id_contest/:id_participant', [upload.multiple, contestValidator.submit, function(req, res, next){
   passport.authenticate('participant',{
     session:false
   }, async function(err, user, info){
@@ -93,7 +93,7 @@ router.post('/:id_contest/submit/:id_participant', [upload.multiple, contestVali
   })(req, res, next);
 }])
 
-router.get('/:id_contest/submission', [contestValidator.contestSubmission, function(req, res, next){
+router.get('/submission/:id_contest', [contestValidator.submission, function(req, res, next){
   passport.authenticate('user',{
     session:false
   }, async function(err, user, info){
@@ -104,7 +104,7 @@ router.get('/:id_contest/submission', [contestValidator.contestSubmission, funct
       });
       return;
     }
-    ContestController.contestSubmission(user, req, res);
+    ContestController.submission(user, req, res);
   })(req, res, next);
 }]);
 
@@ -126,7 +126,7 @@ router.post('/create',[contestValidator.create, function(req, res, next) {
   })(req, res, next);
 }]);
 
-router.get('/:id_contest/update/close/:id_provider', [contestValidator.contestClose, function(req, res, next){
+router.get('/update/close/:id_contest/:id_provider', [contestValidator.close, function(req, res, next){
   passport.authenticate('provider',{
     session:false
   }, async function(err, user, info){
@@ -137,11 +137,11 @@ router.get('/:id_contest/update/close/:id_provider', [contestValidator.contestCl
       });
       return;
     }
-    ContestController.updateClose(user, req, res);
+    ContestController.close(user, req, res);
   })(req, res, next);
 }]);
 
-router.get('/:id_submission/update/winner/:id_provider', [contestValidator.submissionWinner, function(req, res, next){
+router.get('/update/winner/:id_provider/:id_submission', [contestValidator.winner, function(req, res, next){
   passport.authenticate('provider',{
     session:false
   }, async function(err, user, info){
@@ -156,6 +156,23 @@ router.get('/:id_submission/update/winner/:id_provider', [contestValidator.submi
   })(req, res, next);
 }]);
 
+router.get('/winner/:id_contest',[contestValidator.submission,function(req, res, next) {
+  passport.authenticate('all', {
+    session: false
+  }, async function(err, user, info) {
+    // if (err) {
+    //   return next(err);
+    // }
+    if (!user) {
+      res.status(401).json({
+        status: 'Error',
+        message: info.message
+      });
+      return;
+    }
+    ContestController.winner(user, req, res);
+  })(req, res, next);
+}]);
 
 
 
