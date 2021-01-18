@@ -1115,6 +1115,63 @@ class ContestController {
     }
   }
 
+  async getAllContest(req,res) {
+
+    const page = parseInt(req.query.page); // Pagination constant
+    const limit = 5;
+    const offset = (page - 1) * limit;
+
+    const result = await contest.findAll({
+      where:{
+        title: {
+          [Op.regexp]: req.body.contest 
+        }
+      },
+      attributes: [
+        ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
+        'due_date',
+        'title',
+        'prize',
+        'description'
+      ],
+      include: [{ //forein key
+        model: status,
+        attributes: ['status']
+      }, {
+        model: user,
+        attributes: [
+          ['fullname', 'provider']
+        ]
+      }],
+      offset: offset,
+      limit: limit,
+      order: [
+        ['announcement', 'DESC']
+      ]
+    })
+
+    const totalResult = await contest.findAll({
+      where:{
+        title: {
+          [Op.regexp]: req.body.contest 
+        }
+      }
+    })
+
+    const totalPage = (totalResult.length < limit) ? 1 : Math.ceil(totalResult.length / limit)
+
+    for (let i = 0; i < result.length; i++) {
+      result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+    }
+
+    return res.status(200).json({
+      message: "Success",
+      totalResult: totalResult.length,
+      totalPage: totalPage,
+      result: result
+    })
+  }
+
   async contest(user1, req, res) {
     const result = await contest.findOne({
       where: {
@@ -1320,6 +1377,8 @@ class ContestController {
         id:req.params.id_submission
       },
       attributes:[
+        'id_contest',
+        'id_participant',
         'id',
         'submission',
         "description"
@@ -1343,7 +1402,7 @@ class ContestController {
       }
     })
 
-    const winner = user.findOne({
+    const winner = await user.findOne({
       where:{
         id:result.id_participant
       }

@@ -60,6 +60,8 @@ router.post('/mycontest',[function(req, res, next) {
   })(req, res, next);
 }]);
 
+router.post('/getAllContest', ContestController.getAllContest)
+
 router.get('/:id',[contestValidator.contest,function(req, res, next) {
   passport.authenticate('all', {
     session: false

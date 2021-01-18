@@ -205,12 +205,12 @@ admin: [
         return payment.findOne({
             where:{
                 id_contest:req.params.id_contest,
-                evidence_winner: {
-                    [Op.ne]:null
-                }
+                // evidence_winner: {
+                //     [Op.not]: null
+                // }
             }
         }).then(result=>{
-            if(!result) {
+            if(result && result.evidence_winner.slice(5) === null) {
                 throw new Error('Admin Already Submit the payment to the winner')
             }
         })
