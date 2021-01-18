@@ -24,25 +24,25 @@ router.post('/search/category',[function(req, res, next) {
   })(req, res, next);
 }]);
 
-router.post('/search/status',[function(req, res, next) {
-  passport.authenticate('user', {
-    session: false
-  }, async function(err, user, info) {
-    // if (err) {
-    //   return next(err);
-    // }
-    if (!user) {
-      res.status(401).json({
-        status: 'Error',
-        message: info.message
-      });
-      return;
-    }
-    ContestController.searchStat(user, req, res);
-  })(req, res, next);
-}]);
+// router.post('/search/status',[function(req, res, next) {
+//   passport.authenticate('user', {
+//     session: false
+//   }, async function(err, user, info) {
+//     // if (err) {
+//     //   return next(err);
+//     // }
+//     if (!user) {
+//       res.status(401).json({
+//         status: 'Error',
+//         message: info.message
+//       });
+//       return;
+//     }
+//     ContestController.searchStat(user, req, res);
+//   })(req, res, next);
+// }]);
 
-router.get('/mycontest',[function(req, res, next) {
+router.post('/mycontest',[function(req, res, next) {
   passport.authenticate('user', {
     session: false
   }, async function(err, user, info) {

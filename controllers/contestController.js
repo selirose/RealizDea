@@ -85,48 +85,44 @@ class ContestController {
 
     const id_contests = keep.filter(onlyUnique);
 
-    const result = await contest.findAll({
-      where: {
-        id: {
-          [Op.notIn]:id_contests
-        },
-        title: {
-          [Op.regexp]: req.body.contest === "" ? " " : req.body.contest
-        },
-        id_status_contest: 1
-      },
-      attributes: [
-        'id',
-        ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
-        'due_date',
-        'title',
-        'prize',
-        'description'
-      ],
-      include: [{ //forein key
-        model: status,
-        attributes: ['status']
-      }, {
-        model: user,
-        attributes: [
-          ['fullname', 'provider']
-        ]
-      }],
-      offset: offset,
-      limit: limit,
-      order: [
-        ['announcement', 'DESC']
-      ]
-    })
-
-
+    
     if (req.body.contest === "") {
+      const result = await contest.findAll({
+        where: {
+          id: {
+            [Op.notIn]:id_contests
+          },
+          id_status_contest:1
+        },
+        attributes: [
+          ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
+          'due_date',
+          'title',
+          'prize',
+          'description'
+        ],
+        include: [{ //forein key
+          model: status,
+          attributes: ['status']
+        }, {
+          model: user,
+          attributes: [
+            ['fullname', 'provider']
+          ]
+        }],
+        offset: offset,
+        limit: limit,
+        order: [
+          ['announcement', 'DESC']
+        ]
+      })
+
       const totalResult = await contest.findAll({
         where:{
           id:{
             [Op.notIn]:id_contests
           },
-          id_status_contest: 1
+          id_status_contest:1
         }
       })
 
@@ -139,14 +135,48 @@ class ContestController {
       for (let i = 0; i < result.length; i++) {
         result[i].dataValues.status.status = "Apply"
       }
-  
+
       return res.status(200).json({
         message: "Success",
         totalResult: totalResult.length,
         totalPage: totalPage,
         result: result
       })
+
     } else {
+      const result = await contest.findAll({
+        where: {
+          id: {
+            [Op.notIn]:id_contests
+          },
+          title: {
+            [Op.regexp]: req.body.contest 
+          },
+          id_status_contest:1
+        },
+        attributes: [
+          ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
+          'due_date',
+          'title',
+          'prize',
+          'description'
+        ],
+        include: [{ //forein key
+          model: status,
+          attributes: ['status']
+        }, {
+          model: user,
+          attributes: [
+            ['fullname', 'provider']
+          ]
+        }],
+        offset: offset,
+        limit: limit,
+        order: [
+          ['announcement', 'DESC']
+        ]
+      })
+
       const totalResult = await contest.findAll({
         where: {
           id: {
@@ -154,7 +184,8 @@ class ContestController {
           },
           title: {
             [Op.regexp]: req.body.contest 
-          }
+          },
+          id_status_contest:1
         }
       })
 
@@ -175,213 +206,911 @@ class ContestController {
         result: result
       })
     }
-
   }
 
-  async searchStat(user1, req, res) {
+  // async searchStat(user1, req, res) {
 
-    const page = parseInt(req.query.page); // Pagination constant
+  //   const page = parseInt(req.query.page); // Pagination constant
+  //   const limit = 5;
+  //   const offset = (page - 1) * limit;
+
+
+  //   if (user1.id_role == 2) {
+  //     if (req.body.contest === "") {
+  //       const totalResult = await contest.findAndCountAll({
+  //         where: {
+  //           id_provider: user1.id
+  //         }
+  //       })
+  
+  //       const result = await contest.findAll({
+  //         where: {
+  //           id_provider: user1.id
+  //         },
+  //         attributes: [
+  //           ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
+  //           'due_date',
+  //           'title',
+  //           'prize',
+  //           'description'
+  //         ],
+  //         include: [{ //forein key
+  //           model: status,
+  //           attributes: ['status']
+  //         }, {
+  //           model: user,
+  //           attributes: [
+  //             ['fullname', 'provider']
+  //           ]
+  //         }],
+  //         offset: offset,
+  //         limit: limit,
+  //         order: [
+  //           ['announcement', 'DESC']
+  //         ]
+  //       })
+  
+  //       // const resultSize = _.size(totalResult) // Check the reviews dataset size
+  //       const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count / limit)
+  
+  //       for (let i = 0; i < result.length; i++) {
+  //         result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+  //       }
+  
+  //       return res.status(200).json({
+  //         message: "Success",
+  //         totalResult: totalResult.count,
+  //         totalPage: totalPage,
+  //         result: result
+  //       })
+  //     } else {
+  //       const totalResult = await contest.findAndCountAll({
+  //         where: {
+  //           id_provider: user1.id,
+  //           title: {
+  //             [Op.regexp]: req.body.contest
+  //           }
+  //         }
+  //       })
+  
+  //       const result = await contest.findAll({
+  //         where: {
+  //           id_provider: user1.id,
+  //           title: {
+  //             [Op.regexp]: req.body.contest
+  //           }
+  //         },
+  //         attributes: [
+  //           ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
+  //           'due_date',
+  //           'title',
+  //           'prize',
+  //           'description'
+  //         ],
+  //         include: [{ //forein key
+  //           model: status,
+  //           attributes: ['status']
+  //         }, {
+  //           model: user,
+  //           attributes: [
+  //             ['fullname', 'provider']
+  //           ]
+  //         }],
+  //         offset: offset,
+  //         limit: limit,
+  //         order: [
+  //           ['announcement', 'DESC']
+  //         ]
+  //       })
+  
+  //       // const resultSize = _.size(totalResult) // Check the reviews dataset size
+  //       const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count / limit)
+  
+  //       for (let i = 0; i < result.length; i++) {
+  //         result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+  //       }
+  
+  //       return res.status(200).json({
+  //         message: "Success",
+  //         totalResult: totalResult.count,
+  //         totalPage: totalPage,
+  //         result: result
+  //       })
+  //     }
+
+  //   } else if (user1.id_role == 3) {
+  //     if (req.body.contest === "") {
+  //       const totalResult = await contest.findAndCountAll({
+  //       })
+  
+  //       const result = await contest.findAll({
+  //         attributes: [
+  //           ['updatedAt', 'posted'],
+  //           'due_date',
+  //           'title',
+  //           'prize',
+  //           'description'
+  //         ],
+  //         include: [{
+  //           model: status,
+  //           attributes: ['status']
+  //         }, {
+  //           model: user,
+  //           attributes: [
+  //             ['fullname', 'provider']
+  //           ]
+  //         }],
+  //         order: [
+  //           ['announcement', 'DESC']
+  //         ]
+  //       })
+  
+  //       const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count / limit)
+  
+  //       for (let i = 0; i < result.length; i++) {
+  //         result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+  //       }
+  //       return res.status(200).json({
+  //         message: "Success",
+  //         totalResult: totalResult.count,
+  //         totalPage: totalPage,
+  //         result: result
+  //       })
+  //     } else {
+  //       const totalResult = await contest.findAndCountAll({
+  //         where: {
+  //           title: {
+  //             [Op.regexp]: req.body.contest
+  //           }
+  //         }
+  //       })
+  
+  //       const result = await contest.findAll({
+  //         where: {
+  //           title: {
+  //             [Op.regexp]: req.body.contest
+  //           }
+  //         },
+  //         attributes: [
+  //           ['updatedAt', 'posted'],
+  //           'due_date',
+  //           'title',
+  //           'prize',
+  //           'description'
+  //         ],
+  //         include: [{
+  //           model: status,
+  //           attributes: ['status']
+  //         }, {
+  //           model: user,
+  //           attributes: [
+  //             ['fullname', 'provider']
+  //           ]
+  //         }],
+  //         order: [
+  //           ['announcement', 'DESC']
+  //         ]
+  //       })
+  
+  //       const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count / limit)
+  
+  //       for (let i = 0; i < result.length; i++) {
+  //         result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+  //       }
+  //       return res.status(200).json({
+  //         message: "Success",
+  //         totalResult: totalResult.count,
+  //         totalPage: totalPage,
+  //         result: result
+  //       })
+  //     }
+      
+  //   } else {
+  //     res.status(422).json({
+  //       status: "Error"
+  //     })
+  //   }
+  // }
+
+  async myContest(user1,req,res) {
+
+    const page = parseInt(req.query.page);  // Pagination constant
     const limit = 5;
     const offset = (page - 1) * limit;
 
-
     if (user1.id_role == 2) {
-      if (req.body.contest === "") {
-        const totalResult = await contest.findAndCountAll({
-          where: {
-            id_provider: user1.id
-          }
-        })
-  
-        const result = await contest.findAll({
-          where: {
-            id_provider: user1.id
-          },
-          attributes: [
-            'id',
-            ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
-            'due_date',
-            'title',
-            'prize',
-            'description'
-          ],
-          include: [{ //forein key
-            model: status,
-            attributes: ['status']
-          }, {
-            model: user,
+      if (req.body.status === "") {
+        if (req.body.contest === "") {
+          const result = await contest.findAll({
+            where:{
+              id_provider:user1.id
+            },
             attributes: [
-              ['fullname', 'provider']
+              ['updatedAt','posted'], //ambil updateAt ganti jadi posted
+              'due_date',
+              'title',
+              'prize',
+              'description'
+            ],
+            include:[{ //forein key
+              model:status,
+              attributes:['status']
+            },{
+              model:user,
+              attributes:[['fullname','provider']]
+            }],
+            offset: offset,
+            limit: limit,
+            order:[
+              ['announcement', 'DESC']
             ]
-          }],
-          offset: offset,
-          limit: limit,
-          order: [
-            ['announcement', 'DESC']
-          ]
-        })
-  
-        // const resultSize = _.size(totalResult) // Check the reviews dataset size
-        const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count / limit)
-  
-        for (let i = 0; i < result.length; i++) {
-          result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
-        }
-  
-        return res.status(200).json({
-          message: "Success",
-          totalResult: totalResult.count,
-          totalPage: totalPage,
-          result: result
-        })
-      } else {
-        const totalResult = await contest.findAndCountAll({
-          where: {
-            id_provider: user1.id,
-            title: {
-              [Op.regexp]: req.body.contest
-            }
-          }
-        })
-  
-        const result = await contest.findAll({
-          where: {
-            id_provider: user1.id,
-            title: {
-              [Op.regexp]: req.body.contest
-            }
-          },
-          attributes: [
-            'id',
-            ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
-            'due_date',
-            'title',
-            'prize',
-            'description'
-          ],
-          include: [{ //forein key
-            model: status,
-            attributes: ['status']
-          }, {
-            model: user,
-            attributes: [
-              ['fullname', 'provider']
-            ]
-          }],
-          offset: offset,
-          limit: limit,
-          order: [
-            ['announcement', 'DESC']
-          ]
-        })
-  
-        // const resultSize = _.size(totalResult) // Check the reviews dataset size
-        const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count / limit)
-  
-        for (let i = 0; i < result.length; i++) {
-          result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
-        }
-  
-        return res.status(200).json({
-          message: "Success",
-          totalResult: totalResult.count,
-          totalPage: totalPage,
-          result: result
-        })
-      }
+          })
 
-    } else if (user1.id_role == 3) {
-      if (req.body.contest === "") {
-        const totalResult = await contest.findAndCountAll({
-        })
-  
-        const result = await contest.findAll({
-          attributes: [
-            'id',
-            ['updatedAt', 'posted'],
-            'due_date',
-            'title',
-            'prize',
-            'description'
-          ],
-          include: [{
-            model: status,
-            attributes: ['status']
-          }, {
-            model: user,
-            attributes: [
-              ['fullname', 'provider']
-            ]
-          }],
-          order: [
-            ['announcement', 'DESC']
-          ]
-        })
-  
-        const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count / limit)
-  
-        for (let i = 0; i < result.length; i++) {
-          result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
-        }
-        return res.status(200).json({
-          message: "Success",
-          totalResult: totalResult.count,
-          totalPage: totalPage,
-          result: result
-        })
-      } else {
-        const totalResult = await contest.findAndCountAll({
-          where: {
-            title: {
-              [Op.regexp]: req.body.contest
+          const totalResult = await contest.findAndCountAll({
+            where:{
+              id_provider:user1.id
             }
+          })
+
+          const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count/limit)
+
+          for (let i = 0; i < result.length; i++ ) {
+            result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
           }
-        })
-  
-        const result = await contest.findAll({
-          where: {
-            title: {
-              [Op.regexp]: req.body.contest
-            }
-          },
-          attributes: [
-            'id',
-            ['updatedAt', 'posted'],
-            'due_date',
-            'title',
-            'prize',
-            'description'
-          ],
-          include: [{
-            model: status,
-            attributes: ['status']
-          }, {
-            model: user,
+    
+          return res.status(200).json({
+            message:"Success",
+            totalResult:totalResult.count,
+            totalPage:totalPage,
+            result:result
+          })
+
+        } else {
+          const result = await contest.findAll({
+            where:{
+              id_provider:user1.id,
+              title: {
+                [Op.regexp]: req.body.contest 
+              }
+            },
             attributes: [
-              ['fullname', 'provider']
+              ['updatedAt','posted'], //ambil updateAt ganti jadi posted
+              'due_date',
+              'title',
+              'prize',
+              'description'
+            ],
+            include:[{ //forein key
+              model:status,
+              attributes:['status']
+            },{
+              model:user,
+              attributes:[['fullname','provider']]
+            }],
+            offset: offset,
+            limit: limit,
+            order:[
+              ['announcement', 'DESC']
             ]
-          }],
-          order: [
-            ['announcement', 'DESC']
-          ]
-        })
-  
-        const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count / limit)
-  
-        for (let i = 0; i < result.length; i++) {
-          result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
-        }
-        return res.status(200).json({
-          message: "Success",
-          totalResult: totalResult.count,
-          totalPage: totalPage,
-          result: result
-        })
+          })
+
+          const totalResult = await contest.findAndCountAll({
+            where:{
+              id_provider:user1.id,
+              title: {
+                [Op.regexp]: req.body.contest 
+              }
+            }
+          })
+
+          const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count/limit)
+
+          for (let i = 0; i < result.length; i++ ) {
+            result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+          }
+    
+          return res.status(200).json({
+            message:"Success",
+            totalResult:totalResult.count,
+            totalPage:totalPage,
+            result:result
+          })
+        } 
+      } else if (req.body.status == 1) {
+        if (req.body.contest === "") {
+          const result = await contest.findAll({
+            where:{
+              id_provider:user1.id,
+              id_status_contest:1
+            },
+            attributes: [
+              ['updatedAt','posted'], //ambil updateAt ganti jadi posted
+              'due_date',
+              'title',
+              'prize',
+              'description'
+            ],
+            include:[{ //forein key
+              model:status,
+              attributes:['status']
+            },{
+              model:user,
+              attributes:[['fullname','provider']]
+            }],
+            offset: offset,
+            limit: limit,
+            order:[
+              ['announcement', 'DESC']
+            ]
+          })
+
+          const totalResult = await contest.findAndCountAll({
+            where:{
+              id_provider:user1.id,
+              id_status_contest:1
+            }
+          })
+
+          const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count/limit)
+
+          for (let i = 0; i < result.length; i++ ) {
+            result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+          }
+    
+          return res.status(200).json({
+            message:"Success",
+            totalResult:totalResult.count,
+            totalPage:totalPage,
+            result:result
+          })
+
+        } else {
+          const result = await contest.findAll({
+            where:{
+              id_provider:user1.id,
+              title: {
+                [Op.regexp]: req.body.contest 
+              },
+              id_status_contest:1
+            },
+            attributes: [
+              ['updatedAt','posted'], //ambil updateAt ganti jadi posted
+              'due_date',
+              'title',
+              'prize',
+              'description'
+            ],
+            include:[{ //forein key
+              model:status,
+              attributes:['status']
+            },{
+              model:user,
+              attributes:[['fullname','provider']]
+            }],
+            offset: offset,
+            limit: limit,
+            order:[
+              ['announcement', 'DESC']
+            ]
+          })
+
+          const totalResult = await contest.findAndCountAll({
+            where:{
+              id_provider:user1.id,
+              title: {
+                [Op.regexp]: req.body.contest 
+              },
+              id_status_contest:1
+            }
+          })
+
+          const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count/limit)
+
+          for (let i = 0; i < result.length; i++ ) {
+            result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+          }
+    
+          return res.status(200).json({
+            message:"Success",
+            totalResult:totalResult.count,
+            totalPage:totalPage,
+            result:result
+          })
+        } 
+      } else if (req.body.status == 2) {
+        if (req.body.contest === "") {
+          const result = await contest.findAll({
+            where:{
+              id_provider:user1.id,
+              id_status_contest:2
+            },
+            attributes: [
+              ['updatedAt','posted'], //ambil updateAt ganti jadi posted
+              'due_date',
+              'title',
+              'prize',
+              'description'
+            ],
+            include:[{ //forein key
+              model:status,
+              attributes:['status']
+            },{
+              model:user,
+              attributes:[['fullname','provider']]
+            }],
+            offset: offset,
+            limit: limit,
+            order:[
+              ['announcement', 'DESC']
+            ]
+          })
+
+          const totalResult = await contest.findAndCountAll({
+            where:{
+              id_provider:user1.id,
+              id_status_contest:2
+            }
+          })
+
+          const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count/limit)
+
+          for (let i = 0; i < result.length; i++ ) {
+            result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+          }
+    
+          return res.status(200).json({
+            message:"Success",
+            totalResult:totalResult.count,
+            totalPage:totalPage,
+            result:result
+          })
+
+        } else {
+          const result = await contest.findAll({
+            where:{
+              id_provider:user1.id,
+              title: {
+                [Op.regexp]: req.body.contest 
+              },
+              id_status_contest:2
+            },
+            attributes: [
+              ['updatedAt','posted'], //ambil updateAt ganti jadi posted
+              'due_date',
+              'title',
+              'prize',
+              'description'
+            ],
+            include:[{ //forein key
+              model:status,
+              attributes:['status']
+            },{
+              model:user,
+              attributes:[['fullname','provider']]
+            }],
+            offset: offset,
+            limit: limit,
+            order:[
+              ['announcement', 'DESC']
+            ]
+          })
+
+          const totalResult = await contest.findAndCountAll({
+            where:{
+              id_provider:user1.id,
+              title: {
+                [Op.regexp]: req.body.contest 
+              },
+              id_status_contest:2
+            }
+          })
+
+          const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count/limit)
+
+          for (let i = 0; i < result.length; i++ ) {
+            result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+          }
+    
+          return res.status(200).json({
+            message:"Success",
+            totalResult:totalResult.count,
+            totalPage:totalPage,
+            result:result
+          })
+        } 
       }
-      
+    } else if (user1.id_role == 3) {
+      if (req.body.status === "") {
+        if (req.body.contest === "") {
+          const result = await application.findAll({
+            where:{
+              id_participant:user1.id
+            }
+          })
+
+          const test = result
+          const keep = []
+    
+          Object.keys(test).map((key,index) => {
+            keep.push(test[key].dataValues.id_contest)
+          })
+    
+          const id_contests = keep.filter(onlyUnique);
+    
+          const finalresult = await contest.findAll({
+            where:{
+              id:keep
+            },
+            attributes: [
+              ['updatedAt','posted'], //ambil updateAt ganti jadi posted
+              'due_date',
+              'title',
+              'prize',
+              'description'
+            ],
+            include:[{ //forein key
+              model:status,
+              attributes:['status']
+            },{
+              model:user,
+              attributes:[['fullname','provider']]
+            }],
+            offset: offset,
+            limit: limit,
+            order:[
+              ['announcement', 'DESC']
+            ]
+          })
+    
+          const totalResult = await contest.findAndCountAll({
+            where:{
+              id:keep
+            }
+          })
+     
+          const totalPage = (totalResult.count < limit) ? 1 : Math.ceil(totalResult.count/limit)
+    
+          for (let i = 0; i < finalresult.length; i++ ) {
+            finalresult[i].dataValues.posted = moment(finalresult[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+          }
+    
+          return res.status(200).json({
+            message:"Success",
+            totalResult:totalResult.count,
+            totalPage:totalPage,
+            result:finalresult
+          })
+
+        } else {
+          const result = await application.findAll({
+            where:{
+              id_participant:user1.id
+            }
+          })
+    
+          const test = result
+          const keep = []
+    
+          Object.keys(test).map((key,index) => {
+            keep.push(test[key].dataValues.id_contest)
+          })
+    
+          const id_contests = keep.filter(onlyUnique);
+    
+          const finalresult = await contest.findAll({
+            where:{
+              id:keep,
+              title: {
+                [Op.regexp]: req.body.contest 
+              }
+            },
+            attributes: [
+              ['updatedAt','posted'], //ambil updateAt ganti jadi posted
+              'due_date',
+              'title',
+              'prize',
+              'description'
+            ],
+            include:[{ //forein key
+              model:status,
+              attributes:['status']
+            },{
+              model:user,
+              attributes:[['fullname','provider']]
+            }],
+            offset: offset,
+            limit: limit,
+            order:[
+              ['announcement', 'DESC']
+            ]
+          })
+    
+          const totalResult = await contest.findAndCountAll({
+            where:{
+              id:keep,
+              title: {
+                [Op.regexp]: req.body.contest 
+              }
+            }
+          })
+     
+          const totalPage = (totalResult.count < limit) ? 1 : Math.ceil(totalResult.count/limit)
+    
+          for (let i = 0; i < finalresult.length; i++ ) {
+            finalresult[i].dataValues.posted = moment(finalresult[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+          }
+    
+          return res.status(200).json({
+            message:"Success",
+            totalResult:totalResult.count,
+            totalPage:totalPage,
+            result:finalresult
+          })
+        }
+      } else if (req.body.status == 1) {
+        if (req.body.contest === "") {
+          const result = await application.findAll({
+            where:{
+              id_participant:user1.id
+            }
+          })
+    
+          const test = result
+          const keep = []
+    
+          Object.keys(test).map((key,index) => {
+            keep.push(test[key].dataValues.id_contest)
+          })
+    
+          const id_contests = keep.filter(onlyUnique);
+    
+          const finalresult = await contest.findAll({
+            where:{
+              id:keep,
+              id_status_contest:1
+            },
+            attributes: [
+              ['updatedAt','posted'], //ambil updateAt ganti jadi posted
+              'due_date',
+              'title',
+              'prize',
+              'description'
+            ],
+            include:[{ //forein key
+              model:status,
+              attributes:['status']
+            },{
+              model:user,
+              attributes:[['fullname','provider']]
+            }],
+            offset: offset,
+            limit: limit,
+            order:[
+              ['announcement', 'DESC']
+            ]
+          })
+    
+          const totalResult = await contest.findAndCountAll({
+            where:{
+              id:keep,
+              id_status_contest:1
+            }
+          })
+     
+          const totalPage = (totalResult.count < limit) ? 1 : Math.ceil(totalResult.count/limit)
+    
+          for (let i = 0; i < finalresult.length; i++ ) {
+            finalresult[i].dataValues.posted = moment(finalresult[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+          }
+    
+          return res.status(200).json({
+            message:"Success",
+            totalResult:totalResult.count,
+            totalPage:totalPage,
+            result:finalresult
+          })
+        } else {
+          const result = await application.findAll({
+            where:{
+              id_participant:user1.id
+            }
+          })
+    
+          const test = result
+          const keep = []
+    
+          Object.keys(test).map((key,index) => {
+            keep.push(test[key].dataValues.id_contest)
+          })
+    
+          const id_contests = keep.filter(onlyUnique);
+    
+          const finalresult = await contest.findAll({
+            where:{
+              id:keep,
+              title: {
+                [Op.regexp]: req.body.contest 
+              },
+              id_status_contest:1
+            },
+            attributes: [
+              ['updatedAt','posted'], //ambil updateAt ganti jadi posted
+              'due_date',
+              'title',
+              'prize',
+              'description'
+            ],
+            include:[{ //forein key
+              model:status,
+              attributes:['status']
+            },{
+              model:user,
+              attributes:[['fullname','provider']]
+            }],
+            offset: offset,
+            limit: limit,
+            order:[
+              ['announcement', 'DESC']
+            ]
+          })
+    
+          const totalResult = await contest.findAndCountAll({
+            where:{
+              id:keep,
+              title: {
+                [Op.regexp]: req.body.contest 
+              },
+              id_status_contest:1
+            }
+          })
+     
+          const totalPage = (totalResult.count < limit) ? 1 : Math.ceil(totalResult.count/limit)
+    
+          for (let i = 0; i < finalresult.length; i++ ) {
+            finalresult[i].dataValues.posted = moment(finalresult[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+          }
+    
+          return res.status(200).json({
+            message:"Success",
+            totalResult:totalResult.count,
+            totalPage:totalPage,
+            result:finalresult
+          })
+        }
+      } else if (req.body.status == 2) {
+        if (req.body.contest === "") {
+          const result = await application.findAll({
+            where:{
+              id_participant:user1.id
+            }
+          })
+    
+          const test = result
+          const keep = []
+    
+          Object.keys(test).map((key,index) => {
+            keep.push(test[key].dataValues.id_contest)
+          })
+    
+          const id_contests = keep.filter(onlyUnique);
+    
+          const finalresult = await contest.findAll({
+            where:{
+              id:keep,
+              id_status_contest:2
+            },
+            attributes: [
+              ['updatedAt','posted'], //ambil updateAt ganti jadi posted
+              'due_date',
+              'title',
+              'prize',
+              'description'
+            ],
+            include:[{ //forein key
+              model:status,
+              attributes:['status']
+            },{
+              model:user,
+              attributes:[['fullname','provider']]
+            }],
+            offset: offset,
+            limit: limit,
+            order:[
+              ['announcement', 'DESC']
+            ]
+          })
+    
+          const totalResult = await contest.findAndCountAll({
+            where:{
+              id:keep,
+              id_status_contest:2
+            }
+          })
+     
+          const totalPage = (totalResult.count < limit) ? 1 : Math.ceil(totalResult.count/limit)
+    
+          for (let i = 0; i < finalresult.length; i++ ) {
+            finalresult[i].dataValues.posted = moment(finalresult[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+          }
+    
+          return res.status(200).json({
+            message:"Success",
+            totalResult:totalResult.count,
+            totalPage:totalPage,
+            result:finalresult
+          })
+        } else {
+          const result = await application.findAll({
+            where:{
+              id_participant:user1.id
+            }
+          })
+    
+          const test = result
+          const keep = []
+    
+          Object.keys(test).map((key,index) => {
+            keep.push(test[key].dataValues.id_contest)
+          })
+    
+          const id_contests = keep.filter(onlyUnique);
+    
+          const finalresult = await contest.findAll({
+            where:{
+              id:keep,
+              title: {
+                [Op.regexp]: req.body.contest 
+              },
+              id_status_contest:2
+            },
+            attributes: [
+              ['updatedAt','posted'], //ambil updateAt ganti jadi posted
+              'due_date',
+              'title',
+              'prize',
+              'description'
+            ],
+            include:[{ //forein key
+              model:status,
+              attributes:['status']
+            },{
+              model:user,
+              attributes:[['fullname','provider']]
+            }],
+            offset: offset,
+            limit: limit,
+            order:[
+              ['announcement', 'DESC']
+            ]
+          })
+    
+          const totalResult = await contest.findAndCountAll({
+            where:{
+              id:keep,
+              title: {
+                [Op.regexp]: req.body.contest 
+              },
+              id_status_contest:2
+            }
+          })
+     
+          const totalPage = (totalResult.count < limit) ? 1 : Math.ceil(totalResult.count/limit)
+    
+          for (let i = 0; i < finalresult.length; i++ ) {
+            finalresult[i].dataValues.posted = moment(finalresult[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+          }
+    
+          return res.status(200).json({
+            message:"Success",
+            totalResult:totalResult.count,
+            totalPage:totalPage,
+            result:finalresult
+          })
+        }
+      }
     } else {
       res.status(422).json({
-        status: "Error"
+        status:"Error"
       })
     }
   }
@@ -476,125 +1205,7 @@ class ContestController {
 
 
   }
-
-  async myContest(user1,req,res) {
-
-    const page = parseInt(req.query.page);  // Pagination constant
-    const limit = 5;
-    const offset = (page - 1) * limit;
-
-    if (user1.id_role == 2) {
-      const totalResult = await contest.findAndCountAll({
-        where:{
-          id_provider:user1.id
-        }
-      })
-
-      const result = await contest.findAll({
-        where:{
-          id_provider:user1.id
-        },
-        attributes: [
-          'id',
-          ['updatedAt','posted'], //ambil updateAt ganti jadi posted
-          'due_date',
-          'title',
-          'prize',
-          'description'
-        ],
-        include:[{ //forein key
-          model:status,
-          attributes:['status']
-        },{
-          model:user,
-          attributes:[['fullname','provider']]
-        }],
-        offset: offset,
-        limit: limit,
-        order:[
-          ['announcement', 'DESC']
-        ]
-      })
-
-      const totalPage = (totalResult < limit) ? 1 : Math.ceil(totalResult.count/limit)
-
-      for (let i = 0; i < result.length; i++ ) {
-        result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
-      }
-
-      return res.status(200).json({
-        message:"Success",
-        totalResult:totalResult.count,
-        totalPage:totalPage,
-        result:result
-      })
-    } else if (user1.id_role == 3) {
-      const result = await application.findAll({
-        where:{
-          id_participant:user1.id
-        }
-      })
-
-      const test = result
-      const keep = []
-
-      Object.keys(test).map((key,index) => {
-        keep.push(test[key].dataValues.id_contest)
-      })
-
-      const id_contests = keep.filter(onlyUnique);
-
-      const finalresult = await contest.findAll({
-        where:{
-          id:keep
-        },
-        attributes: [
-          'id',
-          ['updatedAt','posted'], //ambil updateAt ganti jadi posted
-          'due_date',
-          'title',
-          'prize',
-          'description'
-        ],
-        include:[{ //forein key
-          model:status,
-          attributes:['status']
-        },{
-          model:user,
-          attributes:[['fullname','provider']]
-        }],
-        offset: offset,
-        limit: limit,
-        order:[
-          ['announcement', 'DESC']
-        ]
-      })
-
-      const totalResult = await contest.findAndCountAll({
-        where:{
-          id:keep
-        }
-      })
  
-      const totalPage = (totalResult.count < limit) ? 1 : Math.ceil(totalResult.count/limit)
-
-      for (let i = 0; i < finalresult.length; i++ ) {
-        finalresult[i].dataValues.posted = moment(finalresult[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
-      }
-
-      return res.status(200).json({
-        message:"Success",
-        totalResult:totalResult.count,
-        totalPage:totalPage,
-        result:finalresult
-      })
-    } else {
-      res.status(422).json({
-        status:"Error"
-      })
-    }
-  }
-
   async submission(user1, req, res) {
 
     const result = await application.findAll({
