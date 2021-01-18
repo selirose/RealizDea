@@ -9,6 +9,8 @@ app.use(cors())
 // Import Routes
 const userRoutes = require('./routes/userRoutes.js')
 const contestRoutes = require('./routes/contestRoutes.js')
+const adminRoutes = require('./routes/adminRoutes.js')
+const paymentRoutes = require('./routes/paymentRoutes')
 
 // Parsing the body of incoming requests
 app.use(bodyParser.json())
@@ -20,6 +22,8 @@ app.use(express.static('public'))
 // Connect the routes with
 app.use('/user', userRoutes);
 app.use('/contest', contestRoutes);
+app.use('/admin', adminRoutes); // seli tambahkan ini
+app.use('/payment', paymentRoutes)
 
-// Listen to port 3000
-app.listen(3000,()=> console.log("server running on http://localhost:3000"));
+// Listen to port 3000 
+app.listen(3000,()=> console.log("server running on http://localhost:3000")); 

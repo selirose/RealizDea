@@ -31,27 +31,27 @@ module.exports = {
       if (isEmptyOrSpaces(value)) {
         throw new Error('Full Name Must not be Empty or Spaces')
       };
-      if (value.split(" ").length < 2) {
-        return user.findOne({
-          where: {
-            firstname: value
-          }
-        }).then(result => {
-          if (result) {
-            throw new Error('Full Name Already Used')
-          }
-        })
-      } else {
-        return user.findOne({
-          where: {
-            fullname: value
-          }
-        }).then(result => {
-          if (result) {
-            throw new Error('Full Name Already Used')
-          }
-        })
-      }
+      // if (value.split(" ").length < 2) {
+      //   return user.findOne({
+      //     where: {
+      //       firstname: value
+      //     }
+      //   }).then(result => {
+      //     if (result) {
+      //       throw new Error('Full Name Already Used')
+      //     }
+      //   })
+      // } else {
+      //   return user.findOne({
+      //     where: {
+      //       fullname: value
+      //     }
+      //   }).then(result => {
+      //     if (result) {
+      //       throw new Error('Full Name Already Used')
+      //     }
+      //   })
+      // }
     }),
     check('email', 'Email Field Must be Email Address').normalizeEmail().isEmail().custom(value => {
       return user.findOne({
@@ -137,19 +137,21 @@ module.exports = {
   ],
 
   update: [
-    check('firstname').isString().custom((value,{req})=>{
-      const fullname = `${req.body.firstname} ${req.body.lastname}`
-      return user.findOne({
-        where:{
-          fullname: fullname,
-          id: {[Op.ne]: req.params.id_user}
-        }
-      }).then(result=>{
-        if (result) {
-          throw new Error('Fullname already exist, kindly change either firstname or lastname')
-        }
-      })
-    }),
+    check('firstname').isString()
+    // .custom((value,{req})=>{
+    //   const fullname = `${req.body.firstname} ${req.body.lastname}`
+    //   return user.findOne({
+    //     where:{
+    //       fullname: fullname,
+    //       id: {[Op.ne]: req.params.id_user}
+    //     }
+    //   }).then(result=>{
+    //     if (result) {
+    //       throw new Error('Fullname already exist, kindly change either firstname or lastname')
+    //     }
+    //   })
+    // })
+    ,
     check('lastname').isString(),
     check('location','Enter Your Domicile or City').isString(),
     async (req, res, next) => {

@@ -174,8 +174,4 @@ router.get('/winner/:id_contest',[contestValidator.submission,function(req, res,
   })(req, res, next);
 }]);
 
-
-
-
-
 module.exports = router;

@@ -200,6 +200,7 @@ passport.use(
         },
         attributes: ['id', 'fullname', 'id_role']
       });
+      console.log(userLogin)
 
       if (!userLogin) {
         return done(null, false, {

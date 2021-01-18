@@ -27,6 +27,31 @@ const uploadMultiple = multer({
   dest: uploadDir
 });
 
+
+const storageProvider = multer.diskStorage({
+  destination: "./public" + uploadDir,
+  filename: function(req, file, cb) {
+    cb(null,"contest_"+ req.params.id_contest + "_provider_" + req.params.id_provider + "_payment_evidence_"+ file.originalname)
+  }
+})
+
+const uploadProvider = multer({
+  storage: storageProvider,
+  dest: uploadDir
+});
+
+const storageAdmin = multer.diskStorage({
+  destination: "./public" + uploadDir,
+  filename: function(req, file, cb) {
+    cb(null,"contest_"+ req.params.id_contest + "_winner_" + req.params.id_winner + "_payment_evidence_"+ file.originalname)
+  }
+})
+
+const uploadAdmin = multer({
+  storage: storageAdmin,
+  dest: uploadDir
+});
+
 module.exports = {
   single: [
     uploadSingle.single('picture')
@@ -34,5 +59,13 @@ module.exports = {
 
   multiple: [
     uploadMultiple.array('image', 5)
+  ],
+  
+  provider: [
+    uploadProvider.single('evidence')
+  ],
+
+  admin: [
+    uploadAdmin.single('evidence')
   ]
 }

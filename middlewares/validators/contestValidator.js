@@ -167,6 +167,11 @@ module.exports = {
     }),
     check('description',"Please Fill in the Description").not().isEmpty(),
     (req, res, next) => {
+      if (req.files.length === 0) {
+        return res.status(422).json({
+          errors:{"images":{"msg":"Please Upload Your Files"}}
+        })
+      }
       try {
         if (req.files.length > 0) {
           const filetypes = /pdf|jpeg|jpg|png|gif/;

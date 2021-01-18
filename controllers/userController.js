@@ -73,7 +73,7 @@ class UserController {
         id: user1.id
         // id:req.params.id
       },
-      attributes: ['firstname', 'lastname', 'location', 'bank', 'account_number', "picture"]
+      attributes: ['id','firstname', 'lastname', 'location', 'bank', 'account_number', "picture"]
     })
 
     return res.status(200).json({
@@ -147,7 +147,7 @@ class UserController {
         where:{
           id:user1.id
         },
-        attributes: ["firstname","lastname","location", "bank","account_number","picture"]
+        attributes: ['id',"firstname","lastname","location", "bank","account_number","picture"]
       })
     }).then(result=>{
       res.json({

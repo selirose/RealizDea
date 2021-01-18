@@ -12,33 +12,65 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
+      id_status_contest:{
+        allowNull:false,
+        type: Sequelize.INTEGER
+      },
       id_provider: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      id_winner: {
-        allowNull: false,
-        type: Sequelize.INTEGER
+      bank_provider: {
+        allowNull: true,
+        type: Sequelize.STRING
       },
-      id_status_contest:{
-        allowNull:false,
-        type: Sequelize.INTEGER
+      account_number_provider: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      payment_date_provider: {
+        allowNull: true,
+        type: Sequelize.DATE
+      },
+      due_date_provider: {
+        allowNull: true,
+        type: Sequelize.DATE
       },
       evidence_provider: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      id_status_provider: {
-        allowNull: false,
-        type: Sequelize.INTEGER
-      },
-      evidence_admin: {
+      status_provider_payment: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      id_status_winner: {
-        allowNull: false,
-        type: Sequelize.INTEGER
+      winner: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      bank_winner: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      account_number_winner: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      payment_date_winner: {
+        allowNull: true,
+        type: Sequelize.DATE
+      },
+      due_date_winner: {
+        allowNull: true,
+        type: Sequelize.DATE
+      },
+      evidence_winner: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      status_winner_payment: {
+        allowNull: true,
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
