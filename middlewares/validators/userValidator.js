@@ -24,13 +24,14 @@ function isNumber(num) {
 
 module.exports = {
   register: [
-    check('fullname').isLength({
+    check('fullname','Alphabet Only').isLength({
       min: 3,
       max: 50
-    }).custom(value => {
-      if (isEmptyOrSpaces(value)) {
-        throw new Error('Full Name Must not be Empty or Spaces')
-      };
+    }).isAlpha().not().isEmpty()
+    // .custom(value => {
+    //   if (isEmptyOrSpaces(value)) {
+    //     throw new Error('Full Name Must not be Empty or Spaces')
+    //   };
       // if (value.split(" ").length < 2) {
       //   return user.findOne({
       //     where: {
@@ -52,7 +53,8 @@ module.exports = {
       //     }
       //   })
       // }
-    }),
+    // })
+    ,
     check('email', 'Email Field Must be Email Address').normalizeEmail().isEmail().custom(value => {
       return user.findOne({
         where: {
