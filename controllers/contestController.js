@@ -95,6 +95,7 @@ class ContestController {
           id_status_contest:1
         },
         attributes: [
+          'id',
           ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
           'due_date',
           'title',
@@ -155,6 +156,7 @@ class ContestController {
           id_status_contest:1
         },
         attributes: [
+          'id',
           ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
           'due_date',
           'title',
@@ -426,6 +428,7 @@ class ContestController {
               id_provider:user1.id
             },
             attributes: [
+              'id',
               ['updatedAt','posted'], //ambil updateAt ganti jadi posted
               'due_date',
               'title',
@@ -474,6 +477,7 @@ class ContestController {
               }
             },
             attributes: [
+              'id',
               ['updatedAt','posted'], //ambil updateAt ganti jadi posted
               'due_date',
               'title',
@@ -524,6 +528,7 @@ class ContestController {
               id_status_contest:1
             },
             attributes: [
+              'id',
               ['updatedAt','posted'], //ambil updateAt ganti jadi posted
               'due_date',
               'title',
@@ -574,6 +579,7 @@ class ContestController {
               id_status_contest:1
             },
             attributes: [
+              'id',
               ['updatedAt','posted'], //ambil updateAt ganti jadi posted
               'due_date',
               'title',
@@ -625,6 +631,7 @@ class ContestController {
               id_status_contest:2
             },
             attributes: [
+              'id',
               ['updatedAt','posted'], //ambil updateAt ganti jadi posted
               'due_date',
               'title',
@@ -675,6 +682,7 @@ class ContestController {
               id_status_contest:2
             },
             attributes: [
+              'id',
               ['updatedAt','posted'], //ambil updateAt ganti jadi posted
               'due_date',
               'title',
@@ -742,6 +750,7 @@ class ContestController {
               id:keep
             },
             attributes: [
+              'id',
               ['updatedAt','posted'], //ambil updateAt ganti jadi posted
               'due_date',
               'title',
@@ -805,6 +814,7 @@ class ContestController {
               }
             },
             attributes: [
+              'id',
               ['updatedAt','posted'], //ambil updateAt ganti jadi posted
               'due_date',
               'title',
@@ -870,6 +880,7 @@ class ContestController {
               id_status_contest:1
             },
             attributes: [
+              'id',
               ['updatedAt','posted'], //ambil updateAt ganti jadi posted
               'due_date',
               'title',
@@ -934,6 +945,7 @@ class ContestController {
               id_status_contest:1
             },
             attributes: [
+              'id',
               ['updatedAt','posted'], //ambil updateAt ganti jadi posted
               'due_date',
               'title',
@@ -1000,6 +1012,7 @@ class ContestController {
               id_status_contest:2
             },
             attributes: [
+              'id',
               ['updatedAt','posted'], //ambil updateAt ganti jadi posted
               'due_date',
               'title',
@@ -1064,6 +1077,7 @@ class ContestController {
               id_status_contest:2
             },
             attributes: [
+              'id',
               ['updatedAt','posted'], //ambil updateAt ganti jadi posted
               'due_date',
               'title',
@@ -1128,6 +1142,7 @@ class ContestController {
         }
       },
       attributes: [
+        'id',
         ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
         'due_date',
         'title',
