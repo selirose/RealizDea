@@ -1349,6 +1349,12 @@ class ContestController {
       }
     })
 
+    await application.update(update, {
+      where: {
+        id_contest:req.params.id_contest
+      }
+    })
+
     const result = await contest.findOne({
       where: {
         id: req.params.id_contest

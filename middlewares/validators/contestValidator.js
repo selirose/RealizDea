@@ -242,11 +242,11 @@ module.exports = {
       return application.findOne({
         where: {
           id: req.params.id_submission,
-          id_status_contest:1
+          id_status_contest:2
         }
       }).then(result => {
         if (!result) {
-          throw new Error('Submission Not Found or Contest Already Closed!')
+          throw new Error('Submission Not Found or Contest Not Closed!')
         }
       })
     }),
