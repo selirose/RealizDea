@@ -5,6 +5,7 @@ const auth = require('../middlewares/auth');
 const ContestController = require('../controllers/contestController');
 const contestValidator = require('../middlewares/validators/contestValidator');
 const upload = require('../middlewares/validators/uploadImage');
+const MailController = require('../controllers/mailController');
 
 router.post('/search/category',[function(req, res, next) {
   passport.authenticate('participant', {
@@ -92,6 +93,7 @@ router.post('/submit/:id_contest/:id_participant', [upload.multiple, contestVali
       return;
     }
     ContestController.submit(user, req, res);
+    MailController.submit(user,req,res)
   })(req, res, next);
 }])
 
@@ -125,6 +127,7 @@ router.post('/create',[contestValidator.create, function(req, res, next) {
       return;
     }
     ContestController.create(user, req, res);
+    MailController.create(user,req,res);
   })(req, res, next);
 }]);
 
@@ -155,6 +158,7 @@ router.get('/update/winner/:id_provider/:id_submission', [contestValidator.winne
       return;
     }
     ContestController.submissionWinner(user, req, res);
+    MailController.winner(user,req,res);
   })(req, res, next);
 }]);
 
