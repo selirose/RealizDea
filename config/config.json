@@ -1,21 +1,21 @@
 {
   "development": {
-    "username": "tommyasni",
-    "password": "root1234",
+    "username": "root",
+    "password": "password1234",
     "database": "RealizDea_dev",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
-    "username": "tommyasni",
-    "password": "root1234",
+    "username": "root",
+    "password": "password1234",
     "database": "RealizDea_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
-    "username": "tommyasni",
-    "password": "root1234",
+    "username": "root",
+    "password": "password1234",
     "database": "RealizDea_production",
     "host": "127.0.0.1",
     "dialect": "mysql"
