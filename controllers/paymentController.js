@@ -133,31 +133,33 @@ class PaymentController {
     }
 
     async approve(user1,req,res) {
-        const contest1 = await contest.findOne({
-            id:req.params.id_contest
+        await contest.update({
+            id_status_contest:1
+        },{
+            where:{
+                id:req.params.id_contest
+            }
         })
 
-        const payment_date = new Date()
+        const contest1 = await contest.findOne({
+            where:{
+                id:req.params.id_contest
+            }
+        })
+
+        const payment_date = new Date(contest1.dataValues.announcement)
         payment_date.setDate(payment_date.getDate()+7)
 
         let update = {
             status_provider_payment:"Paid",
             payment_date_provider: new Date(),
             id_status_contest:contest1.id_status_contest,
-            due_date_winner:payment_date
+            due_date_winner: payment_date
         }
 
         await payment.update(update,{
             where:{
                 id_contest:req.params.id_contest
-            }
-        })
-
-        await contest.update({
-            id_status_contest:1
-        },{
-            where:{
-                id:req.params.id_contest
             }
         })
 

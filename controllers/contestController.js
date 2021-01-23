@@ -1135,56 +1135,115 @@ class ContestController {
     const limit = 5;
     const offset = (page - 1) * limit;
 
-    const result = await contest.findAll({
-      where:{
-        title: {
-          [Op.regexp]: req.body.contest 
-        }
-      },
-      attributes: [
-        'id',
-        ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
-        'due_date',
-        'title',
-        'prize',
-        'description'
-      ],
-      include: [{ //forein key
-        model: status,
-        attributes: ['status']
-      }, {
-        model: user,
+    if (req.body.contest === "") {
+      const result = await contest.findAll({
+        where:{
+          id_status_contest:{
+            [Op.ne]:3
+          }
+        },
         attributes: [
-          ['fullname', 'provider']
+          'id',
+          ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
+          'due_date',
+          'title',
+          'prize',
+          'description'
+        ],
+        include: [{ //forein key
+          model: status,
+          attributes: ['status']
+        }, {
+          model: user,
+          attributes: [
+            ['fullname', 'provider']
+          ]
+        }],
+        offset: offset,
+        limit: limit,
+        order: [
+          ['announcement', 'DESC']
         ]
-      }],
-      offset: offset,
-      limit: limit,
-      order: [
-        ['announcement', 'DESC']
-      ]
-    })
-
-    const totalResult = await contest.findAll({
-      where:{
-        title: {
-          [Op.regexp]: req.body.contest 
+      })
+  
+      const totalResult = await contest.findAll({
+        where:{
+          id_status_contest:{
+            [Op.ne]:3
+          }
         }
+      })
+  
+      const totalPage = (totalResult.length < limit) ? 1 : Math.ceil(totalResult.length / limit)
+  
+      for (let i = 0; i < result.length; i++) {
+        result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
       }
-    })
-
-    const totalPage = (totalResult.length < limit) ? 1 : Math.ceil(totalResult.length / limit)
-
-    for (let i = 0; i < result.length; i++) {
-      result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+  
+      return res.status(200).json({
+        message: "Success",
+        totalResult: totalResult.length,
+        totalPage: totalPage,
+        result: result
+      }) 
+    } else {
+      const result = await contest.findAll({
+        where:{
+          title: {
+            [Op.regexp]: req.body.contest 
+          },
+          id_status_contest:{
+            [Op.ne]:3
+          }
+        },
+        attributes: [
+          'id',
+          ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
+          'due_date',
+          'title',
+          'prize',
+          'description'
+        ],
+        include: [{ //forein key
+          model: status,
+          attributes: ['status']
+        }, {
+          model: user,
+          attributes: [
+            ['fullname', 'provider']
+          ]
+        }],
+        offset: offset,
+        limit: limit,
+        order: [
+          ['announcement', 'DESC']
+        ]
+      })
+  
+      const totalResult = await contest.findAll({
+        where:{
+          title: {
+            [Op.regexp]: req.body.contest 
+          },
+          id_status_contest:{
+            [Op.ne]:3
+          }
+        }
+      })
+  
+      const totalPage = (totalResult.length < limit) ? 1 : Math.ceil(totalResult.length / limit)
+  
+      for (let i = 0; i < result.length; i++) {
+        result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+      }
+  
+      return res.status(200).json({
+        message: "Success",
+        totalResult: totalResult.length,
+        totalPage: totalPage,
+        result: result
+      }) 
     }
-
-    return res.status(200).json({
-      message: "Success",
-      totalResult: totalResult.length,
-      totalPage: totalPage,
-      result: result
-    })
   }
 
   async contest(user1, req, res) {
@@ -1355,6 +1414,12 @@ class ContestController {
       }
     })
 
+    await payment.update(update, {
+      where: {
+        id_contest:req.params.id_contest
+      }
+    })
+
     const result = await contest.findOne({
       where: {
         id: req.params.id_contest
@@ -1417,6 +1482,7 @@ class ContestController {
     },{
       where:{
         id_provider:req.params.id_provider,
+        id_contest:result.id_contest,
         id: {
           [Op.ne]:req.params.id_submission
         }
@@ -1476,6 +1542,84 @@ class ContestController {
       message: "Winner Aplicant",
       result: result
     })
+
+  }
+
+  async win(user1,req, res) {
+    const page = parseInt(req.query.page); // Pagination constant
+    const limit = 5;
+    const offset = (page - 1) * limit;
+
+    const win = await application.findAll({
+      where:{
+        id_participant:user1.id,
+        id_status_contest:4
+      }
+    })
+
+    const id_contests = []
+
+    Object.keys(win).map((key,index) => { 
+      id_contests.push(win[key].dataValues.id_contest)
+    })
+
+     const result = await contest.findAll({
+      where: {
+        id: {
+          [Op.in]:id_contests
+        }
+      },
+      attributes: [
+        'id',
+        ['updatedAt', 'posted'], //ambil updateAt ganti jadi posted
+        'due_date',
+        'title',
+        'prize',
+        'description'
+      ],
+      include: [{ //forein key
+        model: status,
+        attributes: ['status']
+      }, {
+        model: user,
+        attributes: [
+          ['fullname', 'provider']
+        ]
+      }],
+      offset: offset,
+      limit: limit,
+      order: [
+        ['announcement', 'DESC']
+      ]
+    })
+
+
+    const totalResult = await contest.findAll({
+      where: {
+        id: {
+          [Op.in]:id_contests
+        }
+      }
+    })
+
+
+    const totalPage = (totalResult.length < limit) ? 1 : Math.ceil(totalResult.length / limit)
+
+    for (let i = 0; i < result.length; i++) {
+      result[i].dataValues.posted = moment(result[i].dataValues.posted.toJSON()).format('dddd, DD MMMM YYYY')
+    }
+
+    for (let i = 0; i < result.length; i++) {
+      result[i].dataValues.status.status = "Win"
+    }
+
+    return res.status(200).json({
+      message: "Success",
+      totalResult: totalResult.length,
+      totalPage: totalPage,
+      result: result
+    })
+
 
   }
 

@@ -24,14 +24,14 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.DATE,
       get() {
         const payment_date_provider = this.getDataValue('payment_date_provider')
-        return moment(payment_date_provider).format('dddd, DD MMMM YYYY')
+        return moment(payment_date_provider).format('DD/MMM/YYYY')
       }
     },
     due_date_provider:{
       type:DataTypes.DATE,
       get() {
         const due_date_provider = this.getDataValue('due_date_provider')
-        return moment(due_date_provider).format('dddd, DD MMMM YYYY')
+        return moment(due_date_provider).format('DD/MMM/YYYY')
       }
     },
     evidence_provider: {
@@ -49,14 +49,14 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.DATE, 
       get() {
         const payment_date_winner = this.getDataValue('payment_date_winner')
-        return moment(payment_date_winner).format('dddd, DD MMMM YYYY')
+        return moment(payment_date_winner).format('DD/MMM/YYYY')
       }
     },
     due_date_winner: {
       type:DataTypes.DATE,
       get() {
         const due_date_winner = this.getDataValue('due_date_winner')
-        return moment(due_date_winner).format('dddd, DD MMMM YYYY')
+        return moment(due_date_winner).format('DD/MMM/YYYY')
       }
     },
     evidence_winner: {

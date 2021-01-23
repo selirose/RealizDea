@@ -6,6 +6,7 @@ const ContestController = require('../controllers/contestController');
 const contestValidator = require('../middlewares/validators/contestValidator');
 const upload = require('../middlewares/validators/uploadImage');
 const MailController = require('../controllers/mailController');
+const contestController = require('../controllers/contestController');
 
 router.post('/search/category',[function(req, res, next) {
   passport.authenticate('participant', {
@@ -62,6 +63,24 @@ router.post('/mycontest',[function(req, res, next) {
 }]);
 
 router.post('/getAllContest', ContestController.getAllContest)
+
+router.get('/winContest',[function(req, res, next) {
+  passport.authenticate('participant', {
+    session: false
+  }, async function(err, user, info) {
+    // if (err) {
+    //   return next(err);
+    // }
+    if (!user) {
+      res.status(401).json({
+        status: 'Error',
+        message: info.message
+      });
+      return;
+    }
+    ContestController.win(user, req, res);
+  })(req, res, next);
+}]);
 
 router.get('/:id',[contestValidator.contest,function(req, res, next) {
   passport.authenticate('all', {
@@ -179,5 +198,7 @@ router.get('/winner/:id_contest',[contestValidator.submission,function(req, res,
     ContestController.winner(user, req, res);
   })(req, res, next);
 }]);
+
+
 
 module.exports = router;
