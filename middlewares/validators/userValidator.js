@@ -27,7 +27,7 @@ module.exports = {
     check('fullname','Alphabet Only').isLength({
       min: 3,
       max: 50
-    }).isAlpha().not().isEmpty()
+    }).not().isEmpty()
     // .custom(value => {
     //   if (isEmptyOrSpaces(value)) {
     //     throw new Error('Full Name Must not be Empty or Spaces')
