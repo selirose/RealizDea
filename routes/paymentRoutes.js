@@ -54,6 +54,24 @@ router.get('/approve/:id_contest/', [paymentValidator.payment, function(req,res,
     })(req,res,next)
 }])
 
+router.get('/reject/:id_contest/', [paymentValidator.payment, function(req,res,next){
+    passport.authenticate('admin',{
+        session:false
+    }, async function (err,user, info){
+        if(!user){
+            res.status(401).json({
+            status:'Error',
+            message:info.message
+            })
+            return;
+        }
+        paymentController.reject(user,req,res);
+        MailController.reject(user,req,res)
+    })(req,res,next)
+}])
+
+
+
 router.post('/admin/:id_contest/:id_winner', [upload.admin, paymentValidator.admin, function(req,res,next){
     passport.authenticate('admin',{
         session:false

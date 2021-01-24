@@ -158,6 +158,51 @@ class MailController {
     });
   }
 
+  async reject(user1,req,res) {
+    const contest2 = await contest.findOne({
+      where:{
+        id:req.params.id_contest
+      }
+    })
+
+    const user3 = await user.findOne({
+      where:{
+        id:contest2.id_provider
+      }
+    })
+
+    const htmlMail1 = `<h2 align="center">Sorry Your Payment Has Been Rejected!</h2>
+    <h3>Contest Detail :</h3>
+    <ul>
+      <li>Title: ${contest2.title}</li>
+      <li>Prize: ${contest2.prize}</li>
+      <li>Due Date: ${contest2.due_date}</li>
+      <li>Announcement: ${contest2.announcement}</li>
+      <li>Description: ${contest2.description}</li>
+    </ul>
+    
+    <p>Kindly submit the payment evidence for your contest to be opened.\n</p>
+    <p>Regards,</p>
+    <p>RealizDea</p>
+    `
+
+    const msgProvider = {
+      from: '"Realizdea" <Realizdea@example.com>', // sender address
+      to: `${user3.email}`, // list of receivers
+      subject: "Payment Approved", // Subject line
+      // text: `${text}`, // plain text body
+      html: htmlMail1 //html body
+    }
+
+    transporter.sendMail(msgProvider, (error,info) => {
+      if (error) {
+        return console.log(error);
+      }
+      console.log("Message sent: %s", info.messageId);
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));   
+    });
+  }
+
   async submit(user1,req,res) {
     const user3 = await user.findOne({
       where:{

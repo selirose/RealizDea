@@ -195,6 +195,18 @@ class PaymentController {
         })
     }
 
+    async reject(user1,req,res) {
+        await payment.destroy({
+            where:{
+                id_contest:req.params.id_contest
+            }
+        })
+
+        return res.status(200).json({
+            message:"Success",
+        })
+    }
+
     async admin(user1,req,res) {
         let update ={
             payment_date_winner:new Date(),

@@ -104,18 +104,21 @@ module.exports = {
       })
     }),
     check('prize',"Numeric Only!").isNumeric(),
-    check('due_date', "Date Format (YYYY-MM-DD) Only").isDate().toDate(),
+    check('due_date').isDate().toDate(),
     check('announcement').isDate().toDate(),
     check('description',"Please Fill in the Description").not().isEmpty(),
     (req, res, next) => {
-      if (req.body.announcement < req.body.due_date) {
-        return res.status(422).json({
-          errors: {
-            "announcement":"Announcement Date must be later than Due Date"
-          }
-        })
-      }
       const errors = validationResult(req);
+      if (req.body.announcement < req.body.due_date) {
+        let announcement_errror = {
+          value:req.body.announcement,
+          msg: 'Announcement Date must be later than Due Date',
+          param: 'announcement',
+          location: 'body'
+        }
+        errors.errors.push(announcement_errror)
+      }
+      console.log(errors);
       if (!errors.isEmpty()) {
         return res.status(422).json({
           errors: errors.mapped()

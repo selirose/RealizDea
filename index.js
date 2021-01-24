@@ -3,6 +3,8 @@ const express = require('express');
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors') //Enable cors request
+const cron = require('node-cron')
+const cronJob = require('./cron')
 
 app.use(cors())
 
@@ -27,3 +29,7 @@ app.use('/payment', paymentRoutes)
 
 // Listen to port 3000 
 app.listen(3000,()=> console.log("server running on http://localhost:3000")); 
+
+// cron.schedule('* * * * * *', 
+
+// )

@@ -7,10 +7,15 @@ const {
     application
   } = require('../models');
 
+const Op = require('sequelize').Op;
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const router = require('../routes/contestRoutes');
-
+const numFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits:0
+})
 
 class AdminController{
     constructor(){
@@ -43,7 +48,6 @@ class AdminController{
         const totalResult = await payment.findAndCountAll({})
 
         const result = await payment.findAll({
-                
             attributes:[
                 'id_contest',
                 'status_provider_payment',
@@ -74,6 +78,10 @@ class AdminController{
 
 
         const totalPage = (totalResult.count < limit) ? 1 : Math.ceil(totalResult.count / limit)
+
+
+        result.map(x => x.contest.dataValues.amount = numFormatter.format(x.contest.dataValues.amount))
+
 
         return res.status(200).json({
             message: "Success",
@@ -133,6 +141,8 @@ class AdminController{
 
         const totalPage = (totalResult.count < limit) ? 1 : Math.ceil(totalResult.count / limit)
 
+        result.map(x => x.contest.dataValues.amount = numFormatter.format(x.contest.dataValues.amount))
+
         return res.status(200).json({
             message: "Success",
             totalResult:totalResult.count,
@@ -150,15 +160,19 @@ class AdminController{
 
         const totalResult = await payment.findAndCountAll({
             where:{
-                status_provider_payment:'Unpaid',
-                status_winner_payment:'Unpaid',
+                [Op.or]:[
+                    {status_provider_payment:'Unpaid'},
+                    {status_winner_payment:'Unpaid'}
+                ]
             }
         })
 
         const result = await payment.findAll({
             where:{
-                status_provider_payment:'Unpaid',
-                status_winner_payment:'Unpaid',
+                [Op.or]:[
+                    {status_provider_payment:'Unpaid'},
+                    {status_winner_payment:'Unpaid'}
+                ]
             },
             attributes:[
                 'id_contest',
@@ -188,8 +202,9 @@ class AdminController{
             limit:limit
         })
 
-
         const totalPage = (totalResult.count < limit) ? 1 : Math.ceil(totalResult.count / limit)
+
+        result.map(x => x.contest.dataValues.amount = numFormatter.format(x.contest.dataValues.amount))
 
         return res.status(200).json({
             message: "Success",
@@ -197,6 +212,24 @@ class AdminController{
             totalPage,      
             result: result
         })
+
+    }
+
+    async contestWinner(user1,req,res) {
+        const result = await payment.findOne({
+            where:{
+                id_contest:req.params.id_contest
+            },
+            attributes:[
+                'status_winner_payment'
+            ]
+        })
+
+        return res.status(200).json({
+            message: "Success",     
+            result: result
+        })
+
 
     }
 }
