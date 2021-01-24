@@ -45,7 +45,7 @@ class AdminController{
         const result = await payment.findAll({
                 
             attributes:[
-                'id',
+                'id_contest',
                 'status_provider_payment',
                 'payment_date_provider',
                 'due_date_provider',
@@ -103,7 +103,7 @@ class AdminController{
                 status_winner_payment:'Paid',
             },
             attributes:[
-                'id',
+                'id_contest',
                 'status_provider_payment',
                 'payment_date_provider',
                 'due_date_provider',
@@ -161,7 +161,7 @@ class AdminController{
                 status_winner_payment:'Unpaid',
             },
             attributes:[
-                'id',
+                'id_contest',
                 'status_provider_payment',
                 'payment_date_provider',
                 'due_date_provider',
