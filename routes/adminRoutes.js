@@ -64,7 +64,7 @@ router.get('/dashboard/unpaid',[function(req, res, next) {
 }]);
 
 router.get('/dashboard/:id_contest',[paymentValidator.payment,function(req, res, next) {
-  passport.authenticate('admin', {
+  passport.authenticate('all', {
     session: false
   }, async function(err, user, info) {
     // if (err) {
