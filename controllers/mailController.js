@@ -375,6 +375,84 @@ class MailController {
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));   
     });
   }
+
+  async rProviderPay(contest) {
+    const user3 = await user.findOne({
+      where:{
+        id:contest.id_provider
+      }
+    })
+    
+    const due_date = contest.createdAt
+
+    const htmlMail = `<h2 align="center">Reminder!</h2>
+    <h2 align="center">Please Proceed to Your Payment!</h2>
+    <h3>Contest Detail :</h3>
+    <ul>
+      <li>Title: ${contest.title}</li>
+      <li>Prize: ${contest.prize}</li>
+      <li>Due Date: ${new Date(due_date.setDate(due_date.getDate()+7))}</li>
+    </ul>
+    <p>Regards,</p>
+    <p>RealizDea</p>
+    `
+
+    const msg = {
+      from: '"Realizdea" <Realizdea@example.com>', // sender address
+      to: `${user3.email}`, // list of receivers
+      subject: "Payment Reminder", // Subject line
+      // text: `${text}`, // plain text body
+      html: htmlMail //html body
+    }
+
+    transporter.sendMail(msg, (error,info) => {
+      if (error) {
+        return console.log(error);
+      }
+      console.log("Message sent: %s", info.messageId);
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));   
+    });
+  }
+
+  async rContestDel(contest) {
+    const user3 = await user.findOne({
+      where:{
+        id:contest.id_provider
+      }
+    })
+    
+    const due_date = contest.createdAt
+
+
+    const htmlMail = `<h2 align="center">Unpaid Contest Deleted!</h2>
+    <h3>Contest Detail :</h3>
+    <ul>
+      <li>Title: ${contest.title}</li>
+      <li>Prize: ${contest.prize}</li>
+      <li>Due Date: ${new Date(due_date.setDate(due_date.getDate()+7))}</li>
+    </ul>
+    <p>We are sorry to inform you that the contest created will be deleted due to no payment submitted before the payment due date.</p>
+    <p>Regards,</p>
+    <p>RealizDea</p>
+    `
+
+    const msg = {
+      from: '"Realizdea" <Realizdea@example.com>', // sender address
+      to: `${user3.email}`, // list of receivers
+      subject: "Contest Deleted", // Subject line
+      // text: `${text}`, // plain text body
+      html: htmlMail //html body
+    }
+
+    transporter.sendMail(msg, (error,info) => {
+      if (error) {
+        return console.log(error);
+      }
+      console.log("Message sent: %s", info.messageId);
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));   
+    });
+  }
+
 }
 
 module.exports = new MailController;

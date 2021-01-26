@@ -7,6 +7,12 @@ const {
     application
 } = require('../models');
 
+const numFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits:0
+})
+
 const moment = require('moment')
 
 const Op = require('sequelize').Op;
@@ -125,6 +131,8 @@ class PaymentController {
                 attributes:[['prize','amount']]
             }]
         })
+
+        result.contest.dataValues.amount = numFormatter.format(result.contest.dataValues.amount)
 
         return res.status(200).json({
             message:"Success",
