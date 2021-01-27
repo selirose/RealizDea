@@ -1138,9 +1138,7 @@ class ContestController {
     if (req.body.contest === "") {
       const result = await contest.findAll({
         where:{
-          id_status_contest:{
-            [Op.ne]:3
-          }
+          id_status_contest:1
         },
         attributes: [
           'id',
@@ -1168,9 +1166,7 @@ class ContestController {
   
       const totalResult = await contest.findAll({
         where:{
-          id_status_contest:{
-            [Op.ne]:3
-          }
+          id_status_contest:1
         }
       })
   
@@ -1192,9 +1188,7 @@ class ContestController {
           title: {
             [Op.regexp]: req.body.contest 
           },
-          id_status_contest:{
-            [Op.ne]:3
-          }
+          id_status_contest:1
         },
         attributes: [
           'id',
@@ -1225,9 +1219,7 @@ class ContestController {
           title: {
             [Op.regexp]: req.body.contest 
           },
-          id_status_contest:{
-            [Op.ne]:3
-          }
+          id_status_contest:1
         }
       })
   
