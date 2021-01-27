@@ -24,12 +24,22 @@ app.use(express.static('public'))
 // Connect the routes with
 app.use('/user', userRoutes);
 app.use('/contest', contestRoutes);
-app.use('/admin', adminRoutes); // seli tambahkan ini
+app.use('/admin', adminRoutes); 
 app.use('/payment', paymentRoutes)
 
 // Listen to port 3000 
 app.listen(3000,()=> console.log("server running on http://localhost:3000")); 
 
-// cron.schedule('* * * * * *', 
+cron.schedule('0 0 0 * * *', async () => {
+  cronJob.rContestDel(),
+  cronJob.rProviderPay()
+  }
+)
 
-// )
+module.exports = app
+
+
+// "dev":"NODE_ENV=development nodemon -r ./index.js",
+// "test": "NODE_ENV=test mocha ./tests/*.js --exit",
+// "start":"NODE_ENV=production forever start index.js",
+// "stop":"NODE_ENV=production forever stop index.js"

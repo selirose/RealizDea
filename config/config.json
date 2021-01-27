@@ -8,9 +8,9 @@
   },
   "test": {
     "username": "root",
-    "password": "password1234",
+    "password": "mysql",
     "database": "RealizDea_test",
-    "host": "127.0.0.1",
+    "host": "mysql",
     "dialect": "mysql"
   },
   "production": {

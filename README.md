@@ -96,20 +96,4 @@ in terminal ~$ sudo setfacl -m user:gitlab-runner:rwx /var/www/final-project
 14. CI/CD Deployment
 - Create the ".gitlab-ci.yml" file and code based on requirement, (can follow directly the one in slide as it is the simpliest one and accomodate to the above coding style).
 
-15. Setup SSL Cert
-- Make ssl certificate
-    openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365
-    openssl rsa -in keytmp.pem -out key.pem
-    mkdir ssl
-    mv cert.pem key.pem keytmp.pem ssl/
 
-- Add to index.js file
-    const fs = require("fs");
-    const https = require("https");
-    const key = fs.readFileSync("./ssl/key.pem", "utf-8");
-    const cert = fs.readFileSync("./ssl/cert.pem", "utf-8");
-
-    https.createServer({key: key, cert: cert }, app).listen(3001);
-
-- Create client.js file to testing one API with https to test the https working or not
-- Notes: This is a self-signed certificate, so we need to skip the SSL certificate check with httpsAgent in the client side!

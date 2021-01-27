@@ -12,6 +12,13 @@ cache:
 test:
   # Docker image
   image: node:latest
+  # MySQL Services
+  services:
+    - mysql:latest
+  # MySQL Variable
+  variables:
+    MYSQL_DATABASE: $MYSQL_DB
+    MYSQL_ROOT_PASSWORD: $MYSQL_PASS
   # Attach Test job to Test stage
   stage: test
   # Config to use GitLab Shared Runner with Executor Docker
@@ -19,7 +26,10 @@ test:
     - docker
   script:
     - npm install
-    # - npm run test
+    - npm install -g sequelize-cli
+    - sequelize db:migrate --env=test
+    - sequelize db:seed:all --env=test
+    - npm run test
   # Defines the names of branches and tags the job runs for
   only:
     - master

@@ -70,8 +70,6 @@ router.get('/reject/:id_contest/', [paymentValidator.payment, function(req,res,n
     })(req,res,next)
 }])
 
-
-
 router.post('/admin/:id_contest/:id_winner', [upload.admin, paymentValidator.admin, function(req,res,next){
     passport.authenticate('admin',{
         session:false

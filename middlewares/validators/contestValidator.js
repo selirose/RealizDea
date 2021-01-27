@@ -118,7 +118,7 @@ module.exports = {
         }
         errors.errors.push(announcement_errror)
       }
-      console.log(errors);
+
       if (!errors.isEmpty()) {
         return res.status(422).json({
           errors: errors.mapped()
