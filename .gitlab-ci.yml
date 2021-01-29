@@ -50,7 +50,7 @@ deploy:
     - sequelize db:create --env=production
     - sequelize db:migrate --env=production
     # Restart NodeJS service
-    - forever stop index.js || true
-    - forever start index.js
+    - npm run stop || true
+    - npm run start
   only:
     - master
