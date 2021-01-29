@@ -47,6 +47,8 @@ deploy:
     - cp -r -u * $PROJECT_DIR
     - cd $PROJECT_DIR
     - npm install
+    - sequelize db:create --env=production
+    - sequelize db:migrate --env=production
     # Restart NodeJS service
     - forever stop index.js || true
     - forever start index.js
