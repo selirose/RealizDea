@@ -273,41 +273,40 @@ describe('payment', async ()=>{
     })
   })
 
-  describe('/GET Payment Approve', ()=> {
-    it('No Token',()=>{
-      let createContest = {
-        title:"Unit Testing Approve Purpose 2",
-        prize:"100000000",
-        due_date:'2021-02-27',
-        announcement:'2021-03-01',
-        description:"Unit Testing Payment Purpose"
-      }
-      chai.request(server)
-      .post('/contest/create')
-      .set({Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJmdWxsbmFtZSI6IlRvbW15IEFzbmkiLCJpZF9yb2xlIjoyfSwiaWF0IjoxNjEwOTg2MjQwfQ.x57NYizG-YHZQOLmW9HdCPnnmBA7nubsDnTRXEXERHg`})
-      .send(createContest)
-      .end((err,res)=>{
-        contest_id = res.body.result.id
-        chai.request(server)
-        .post(`/payment/provider/${contest_id}/3`)
-        .set({Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJmdWxsbmFtZSI6IlRvbW15IEFzbmkiLCJpZF9yb2xlIjoyfSwiaWF0IjoxNjEwOTg2MjQwfQ.x57NYizG-YHZQOLmW9HdCPnnmBA7nubsDnTRXEXERHg`})
-        .field('bank_provider','BRI')
-        .field('account_number_provider','1234567001')
-        .attach('evidence','tests/evidence.png')
-        .end((err,res)=>{
-          chai.request(server)
-          .get(`/payment/approve/${contest_id}`)
-          .end((err,res)=>{
-            res.should.have.status(401);
-            res.body.should.be.an('object');
-            res.body.should.have.property('status');
-            res.body.should.have.property('message');
-          })
-        })
-      })
-    })
-    
-  })
+  // describe('/GET Payment Approve', ()=> {
+  //   it('No Token',()=>{
+  //     let createContest = {
+  //       title:"Unit Testing Approve Purpose 2",
+  //       prize:"100000000",
+  //       due_date:'2021-02-27',
+  //       announcement:'2021-03-01',
+  //       description:"Unit Testing Payment Purpose"
+  //     }
+  //     chai.request(server)
+  //     .post('/contest/create')
+  //     .set({Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJmdWxsbmFtZSI6IlRvbW15IEFzbmkiLCJpZF9yb2xlIjoyfSwiaWF0IjoxNjEwOTg2MjQwfQ.x57NYizG-YHZQOLmW9HdCPnnmBA7nubsDnTRXEXERHg`})
+  //     .send(createContest)
+  //     .end((err,res)=>{
+  //       contest_id = res.body.result.id
+  //       chai.request(server)
+  //       .post(`/payment/provider/${contest_id}/3`)
+  //       .set({Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJmdWxsbmFtZSI6IlRvbW15IEFzbmkiLCJpZF9yb2xlIjoyfSwiaWF0IjoxNjEwOTg2MjQwfQ.x57NYizG-YHZQOLmW9HdCPnnmBA7nubsDnTRXEXERHg`})
+  //       .field('bank_provider','BRI')
+  //       .field('account_number_provider','1234567001')
+  //       .attach('evidence','tests/evidence.png')
+  //       .end((err,res)=>{
+  //         chai.request(server)
+  //         .get(`/payment/approve/${contest_id}`)
+  //         .end((err,res)=>{
+  //           res.should.have.status(401);
+  //           res.body.should.be.an('object');
+  //           res.body.should.have.property('status');
+  //           res.body.should.have.property('message');
+  //         })
+  //       })
+  //     })
+  //   })
+  // })
 
   describe('/GET Payment Approve', ()=> {
     it('It Should Return payment approve',()=>{
