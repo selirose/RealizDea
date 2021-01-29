@@ -14,10 +14,14 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
+    "username": "admin",
     "password": "password1234",
     "database": "RealizDea_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "host": "final-project.cq4rh0aa8rse.ap-southeast-1.rds.amazonaws.com",
+    "port":3306,
+    "dialect": "mysql",
+    "dialectOptions": {
+      "ssl":"Amazon RDS"
+    }
   }
 }

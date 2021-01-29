@@ -31,7 +31,7 @@
   },
   "scripts": {
     "dev": "NODE_ENV=development nodemon -r ./index.js",
-    "test": "NODE_ENV=test mocha ./tests/*.js --exit",
+    "test": "NODE_ENV=test nyc mocha ./tests/*.js --exit",
     "start": "NODE_ENV=production forever start index.js",
     "stop": "NODE_ENV=production forever stop index.js",
     "coverage": "nyc --reporter html --reporter text npm test"

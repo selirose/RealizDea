@@ -39,7 +39,3 @@ cron.schedule('0 0 0 * * *', async () => {
 module.exports = app
 
 
-// "dev":"NODE_ENV=development nodemon -r ./index.js",
-// "test": "NODE_ENV=test mocha ./tests/*.js --exit",
-// "start":"NODE_ENV=production forever start index.js",
-// "stop":"NODE_ENV=production forever stop index.js"
