@@ -44,6 +44,14 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     description: DataTypes.TEXT,
+    poster: {
+      type: DataTypes.STRING,
+      defaultValue:'contest_default_poster.png',
+      get() {
+        const poster = this.getDataValue('poster');
+        return "/img/" + poster
+      }
+    },
     id_status_contest: DataTypes.INTEGER,
     announcement:{
       type:DataTypes.DATE,

@@ -108,6 +108,21 @@ module.exports = {
     check('announcement').isDate().toDate(),
     check('description',"Please Fill in the Description").not().isEmpty(),
     (req, res, next) => {
+      if (req.file) {
+        const filetypes = /pdf|jpeg|jpg|png|gif/;
+        const extname = filetypes.test(path.extname(req.file.originalname).toLowerCase());
+        const mimetype = filetypes.test(req.file.mimetype);
+        if (req.file.size > 10000000) {
+          return res.status(422).json({
+            errors:{"poster":{"msg":"Please Upload Image file size < 10 MB"}}
+          })
+        } else if (!mimetype || !extname) {
+          return res.status(422).json({
+            errors:{"poster":{"msg":"Please Image file Only"}}
+          })
+        }
+      }
+
       const errors = validationResult(req);
       if (req.body.announcement < req.body.due_date) {
         let announcement_errror = {
@@ -118,6 +133,8 @@ module.exports = {
         }
         errors.errors.push(announcement_errror)
       }
+
+      
 
       if (!errors.isEmpty()) {
         return res.status(422).json({

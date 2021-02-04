@@ -28,6 +28,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.TEXT
       },
+      poster: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       id_status_contest: {
         allowNull: true,
         type: Sequelize.INTEGER

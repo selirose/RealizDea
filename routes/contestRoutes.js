@@ -131,7 +131,7 @@ router.get('/submission/:id_contest', [contestValidator.submission, function(req
   })(req, res, next);
 }]);
 
-router.post('/create',[contestValidator.create, function(req, res, next) {
+router.post('/create',[upload.poster, contestValidator.create, function(req, res, next) {
   passport.authenticate('provider', {
     session: false
   }, async function(err, user, info) {

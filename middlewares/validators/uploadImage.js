@@ -52,6 +52,18 @@ const uploadAdmin = multer({
   dest: uploadDir
 });
 
+const storagePoster = multer.diskStorage({
+  destination: "./public" + uploadDir,
+  filename: function(req, file, cb) {
+    cb(null,"contest_"+ req.body.title + "_poster" + path.extname(file.originalname))
+  }
+})
+
+const uploadPoster = multer({
+  storage: storagePoster,
+  dest: uploadDir,
+})
+
 module.exports = {
   single: [
     uploadSingle.single('picture')
@@ -67,5 +79,9 @@ module.exports = {
 
   admin: [
     uploadAdmin.single('evidence')
+  ],
+
+  poster: [
+    uploadPoster.single('poster')
   ]
 }

@@ -100,7 +100,8 @@ class ContestController {
           'due_date',
           'title',
           'prize',
-          'description'
+          'description',
+          'poster'
         ],
         include: [{ //forein key
           model: status,
@@ -161,7 +162,8 @@ class ContestController {
           'due_date',
           'title',
           'prize',
-          'description'
+          'description',
+          'poster'
         ],
         include: [{ //forein key
           model: status,
@@ -433,7 +435,8 @@ class ContestController {
               'due_date',
               'title',
               'prize',
-              'description'
+              'description',
+              'poster'
             ],
             include:[{ //forein key
               model:status,
@@ -482,7 +485,8 @@ class ContestController {
               'due_date',
               'title',
               'prize',
-              'description'
+              'description',
+              'poster'
             ],
             include:[{ //forein key
               model:status,
@@ -533,7 +537,8 @@ class ContestController {
               'due_date',
               'title',
               'prize',
-              'description'
+              'description',
+              'poster'
             ],
             include:[{ //forein key
               model:status,
@@ -584,7 +589,8 @@ class ContestController {
               'due_date',
               'title',
               'prize',
-              'description'
+              'description',
+              'poster'
             ],
             include:[{ //forein key
               model:status,
@@ -636,7 +642,8 @@ class ContestController {
               'due_date',
               'title',
               'prize',
-              'description'
+              'description',
+              'poster'
             ],
             include:[{ //forein key
               model:status,
@@ -687,7 +694,8 @@ class ContestController {
               'due_date',
               'title',
               'prize',
-              'description'
+              'description',
+              'poster'
             ],
             include:[{ //forein key
               model:status,
@@ -755,7 +763,8 @@ class ContestController {
               'due_date',
               'title',
               'prize',
-              'description'
+              'description',
+              'poster'
             ],
             include:[{ //forein key
               model:status,
@@ -819,7 +828,8 @@ class ContestController {
               'due_date',
               'title',
               'prize',
-              'description'
+              'description',
+              'poster'
             ],
             include:[{ //forein key
               model:status,
@@ -885,7 +895,8 @@ class ContestController {
               'due_date',
               'title',
               'prize',
-              'description'
+              'description',
+              'poster'
             ],
             include:[{ //forein key
               model:status,
@@ -950,7 +961,8 @@ class ContestController {
               'due_date',
               'title',
               'prize',
-              'description'
+              'description',
+              'poster'
             ],
             include:[{ //forein key
               model:status,
@@ -1017,7 +1029,8 @@ class ContestController {
               'due_date',
               'title',
               'prize',
-              'description'
+              'description',
+              'poster'
             ],
             include:[{ //forein key
               model:status,
@@ -1082,7 +1095,8 @@ class ContestController {
               'due_date',
               'title',
               'prize',
-              'description'
+              'description',
+              'poster'
             ],
             include:[{ //forein key
               model:status,
@@ -1146,7 +1160,8 @@ class ContestController {
           'due_date',
           'title',
           'prize',
-          'description'
+          'description',
+          'poster'
         ],
         include: [{ //forein key
           model: status,
@@ -1196,7 +1211,8 @@ class ContestController {
           'due_date',
           'title',
           'prize',
-          'description'
+          'description',
+          'poster'
         ],
         include: [{ //forein key
           model: status,
@@ -1249,7 +1265,8 @@ class ContestController {
         'prize',
         'due_date',
         'announcement',
-        'description'
+        'description',
+        'poster'
       ],
       include: [{
         model: status,
@@ -1362,6 +1379,7 @@ class ContestController {
       prize: req.body.prize,
       due_date: req.body.due_date,
       description: req.body.description,
+      poster:req.file === undefined ? "contest_default_poster.png" : req.file.filename,
       id_status_contest: 3,
       announcement: req.body.announcement
     })
@@ -1375,7 +1393,8 @@ class ContestController {
         'prize',
         'due_date',
         'announcement',
-        'description'
+        'description',
+        'poster'
       ],
       include: [{
         model: status,
@@ -1422,7 +1441,8 @@ class ContestController {
         'prize',
         'due_date',
         'announcement',
-        'description'
+        'description',
+        'poster'
       ],
       include: [{
         model: status,
@@ -1567,7 +1587,8 @@ class ContestController {
         'due_date',
         'title',
         'prize',
-        'description'
+        'description',
+        'poster'
       ],
       include: [{ //forein key
         model: status,
