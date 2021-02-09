@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     poster: {
       type: DataTypes.STRING,
-      defaultValue:'contest_default_poster.png',
+      defaultValue:'contest_default_poster.jpg',
       get() {
         const poster = this.getDataValue('poster');
         return "/img/" + poster
