@@ -1,20 +1,20 @@
 {
   "development": {
-    "username": "root",
-    "password": "password1234",
+    "username": "asus",
+    "password": "12345",
     "database": "RealizDea_dev",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": "mysql",
+    "username": "asus",
+    "password": "12345",
     "database": "RealizDea_test",
     "host": "mysql",
     "dialect": "mysql"
   },
   "production": {
-    "username": "admin",
+    "username": "adminv",
     "password": "password1234",
     "database": "RealizDea_production",
     "host": "final-project.cq4rh0aa8rse.ap-southeast-1.rds.amazonaws.com",
